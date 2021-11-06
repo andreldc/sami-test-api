@@ -10,6 +10,11 @@ export class BeneficiaryController {
     this.model = new BeneficiaryRepository()
   }
 
+  async findAll (): Promise<any> {
+    const beneficiaries = await this.model.findAll()
+    return beneficiaries
+  }
+
   async create (data: any): Promise<any> {
     const beneficiary = plainToClass(Beneficiary, data)
 
