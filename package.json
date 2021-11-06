@@ -12,12 +12,13 @@
     "build:ts": "tsc",
     "dev": "tsc && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"tsc -w\" \"fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js\"",
     "up": "docker-compose up -d",
-    "down": "docker-compose down"    
+    "down": "docker-compose down"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "class-validator": "^0.13.1",
     "fastify": "^3.0.0",
     "fastify-autoload": "^3.3.1",
     "fastify-cli": "^2.13.0",
