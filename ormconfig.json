@@ -1,6 +1,6 @@
 {
   "type": "mysql",
-  "host": "db",
+  "host": "localhost",
   "port": 3306,
   "username": "root",
   "password": "4231",
@@ -9,14 +9,14 @@
   "logging": false,
   "entities": ["dist/src/entities/*.js"],
   "migrations": [
-     "src/migrations/**/*.ts"
+    "src/migrations/**/*.ts"
   ],
   "subscribers": [
-     "src/subscribers/**/*.ts"
+    "src/subscribers/**/*.ts"
   ],
   "cli": {
-     "entitiesDir": "src/entities",
-     "migrationsDir": "src/migrations",
-     "subscribersDir": "src/subscribers"
+    "entitiesDir": "src/entities",
+    "migrationsDir": "src/migrations",
+    "subscribersDir": "src/subscribers"
   }
 }
