@@ -15,6 +15,11 @@ export class BeneficiaryController {
     return beneficiaries
   }
 
+  async findById (id: number): Promise<any> {
+    const beneficiary = await this.model.findById(id)
+    return beneficiary
+  }
+
   async create (data: any): Promise<any> {
     const beneficiary = plainToClass(Beneficiary, data)
 

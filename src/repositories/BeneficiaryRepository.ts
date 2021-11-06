@@ -10,6 +10,12 @@ export class BeneficiaryRepository {
       .getMany()
   }
 
+  async findById (id: number): Promise<Beneficiary | undefined> {
+    return await this.repository.createQueryBuilder('beneficiary')
+      .where('beneficiary.id = :id', { id })
+      .getOne()
+  }
+
   async create (beneficiary: Beneficiary): Promise<Beneficiary> {
     return await this.repository.save(beneficiary)
   }
