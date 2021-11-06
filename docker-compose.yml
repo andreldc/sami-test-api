@@ -1,0 +1,25 @@
+version: "3.2"
+services:
+  db:
+    image: mysql:8.0.27
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "4231"
+      MYSQL_DATABASE: "sami"
+    ports:
+      - 3306:3306
+  api:
+    image: node:14
+    container_name: api
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: bash -c "yarn && yarn dev"
+    links:
+      - db
