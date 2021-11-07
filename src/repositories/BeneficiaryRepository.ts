@@ -16,10 +16,14 @@ export class BeneficiaryRepository {
       .getOne()
   }
 
-  async findByCpf (cpf: string): Promise<Beneficiary | undefined> {
-    return await this.repository.createQueryBuilder('beneficiary')
+  async findByCpf (cpf: string, ignoreId?: number): Promise<Beneficiary | undefined> {
+    const query = await this.repository.createQueryBuilder('beneficiary')
       .where('beneficiary.cpf = :cpf', { cpf })
-      .getOne()
+
+    if (ignoreId) {
+      query.andWhere('beneficiary.id <> :id', { id: ignoreId })
+    }
+    return await query.getOne()
   }
 
   async create (beneficiary: Beneficiary): Promise<Beneficiary> {

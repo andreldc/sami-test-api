@@ -29,9 +29,14 @@ const beneficiary: FastifyPluginAsync = async (fastify, opts): Promise<void> => 
   })
 
   fastify.put<{ Params: IdParam}>('/:id', async function (request, reply) {
-    const { id } = request.params
-    const beneficiary = request.body
-    return await controller.update(id, beneficiary)
+    try {
+      const { id } = request.params
+      const beneficiary = await controller.update(id, request.body)
+      reply.code(200).send(beneficiary)
+    } catch (error: unknown) {
+      const httpError = HttpError(error as Error)
+      reply.code(httpError.statusCode).send(httpError.body)
+    }
   })
 
   fastify.delete<{Params: IdParam}>('/:id', async function (request, reply) {
