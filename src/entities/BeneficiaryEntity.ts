@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
-import { BaseEntity } from './BaseEntity'
-import { Length, IsString, IsDate, IsNotEmpty, IsEnum, IsInt, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
+import { IsString, IsDate, IsNotEmpty, IsEnum, IsInt, IsOptional } from 'class-validator'
+import { IsCpf } from '../validators/IsCpf'
+import { BaseEntity } from './BaseEntity'
 
 export enum PlanType {
   BASIC = 'basic',
@@ -18,8 +19,9 @@ export class Beneficiary extends BaseEntity {
   @Column('varchar', { length: 200, nullable: false })
   name!: string
 
-  @IsString() @IsNotEmpty()
-  @Length(11, 11)
+  @IsString() @IsNotEmpty() @IsCpf({
+    message: '$value is not a valid CPF'
+  })
   @Column('varchar', { length: 11, unique: true, nullable: false })
   cpf!: string
 
