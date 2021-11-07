@@ -23,10 +23,14 @@ export class BeneficiaryController {
 
   async create (data: any): Promise<any> {
     const beneficiary = plainToClass(Beneficiary, data)
-    const validationErrors = (await validate(beneficiary)).map(error => ({ message: 'validation error', property: error.property, error: error.constraints }))
 
+    const validationErrors = (await validate(beneficiary)).map(error => ({ message: 'validation error', property: error.property, error: error.constraints }))
     if (validationErrors.length > 0) {
       throw new ValidationError('invalid fields', validationErrors)
+    }
+
+    if (await this.repository.findByCpf(beneficiary.cpf)) {
+      throw new ValidationError('beneficiary already exists', [{ message: 'Beneficiary already exists', property: 'cpf', error: `beneficiary with cpf ${beneficiary.cpf} already exists` }])
     }
 
     const newBeneficiary = await this.repository.create(data)

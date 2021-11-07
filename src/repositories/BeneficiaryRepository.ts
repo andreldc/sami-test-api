@@ -16,6 +16,12 @@ export class BeneficiaryRepository {
       .getOne()
   }
 
+  async findByCpf (cpf: string): Promise<Beneficiary | undefined> {
+    return await this.repository.createQueryBuilder('beneficiary')
+      .where('beneficiary.cpf = :cpf', { cpf })
+      .getOne()
+  }
+
   async create (beneficiary: Beneficiary): Promise<Beneficiary> {
     return await this.repository.save(beneficiary)
   }
