@@ -35,7 +35,7 @@ export class BeneficiaryRepository {
     return await this.findById(beneficiary.id)
   }
 
-  async delete (id: number): Promise<any> {
+  async delete (id: number): Promise<void> {
     await this.repository.delete(id)
   }
 }

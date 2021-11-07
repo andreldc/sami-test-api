@@ -12,12 +12,12 @@ export class BeneficiaryController {
     this.repository = new BeneficiaryRepository()
   }
 
-  async findAll (): Promise<any> {
+  async findAll (): Promise<Beneficiary[]> {
     const beneficiaries = await this.repository.findAll()
     return beneficiaries
   }
 
-  async findById (id: number): Promise<any> {
+  async findById (id: number): Promise<Beneficiary> {
     const beneficiary = await this.repository.findById(id)
 
     if (!beneficiary) {
@@ -27,7 +27,7 @@ export class BeneficiaryController {
     return beneficiary
   }
 
-  async create (data: any): Promise<any> {
+  async create (data: any): Promise<Beneficiary> {
     const beneficiary = plainToClass(Beneficiary, data)
 
     const validationErrors = (await validate(beneficiary)).map(error => ({ message: 'validation error', property: error.property, error: error.constraints }))
@@ -43,7 +43,7 @@ export class BeneficiaryController {
     return newBeneficiary
   }
 
-  async update (id: number, data: any): Promise<any> {
+  async update (id: number, data: any): Promise<Beneficiary | undefined> {
     if (!data.id) {
       data.id = id
     }
@@ -63,7 +63,7 @@ export class BeneficiaryController {
     return updatedBeneficiary
   }
 
-  async delete (id: number): Promise<any> {
+  async delete (id: number): Promise<void> {
     const beneficiary = await this.repository.findById(id)
 
     if (!beneficiary) {
@@ -71,6 +71,5 @@ export class BeneficiaryController {
     }
 
     await this.repository.delete(id)
-    return { message: 'Beneficiary deleted' }
   }
 }
