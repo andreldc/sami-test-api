@@ -1,7 +1,8 @@
-import { BeneficiaryRepository } from '../repositories/BeneficiaryRepository'
-import { Beneficiary } from '../entities/BeneficiaryEntity'
 import { validate } from 'class-validator'
 import { plainToClass } from 'class-transformer'
+import { BeneficiaryRepository } from '../repositories/BeneficiaryRepository'
+import { Beneficiary } from '../entities/BeneficiaryEntity'
+import { ValidationError } from '../errors/ValidationError'
 
 export class BeneficiaryController {
   repository: BeneficiaryRepository
@@ -22,11 +23,10 @@ export class BeneficiaryController {
 
   async create (data: any): Promise<any> {
     const beneficiary = plainToClass(Beneficiary, data)
-
-    const validationErrors = (await validate(beneficiary)).map(error => ({ property: error.property, error: error.constraints }))
+    const validationErrors = (await validate(beneficiary)).map(error => ({ message: 'validation error', property: error.property, error: error.constraints }))
 
     if (validationErrors.length > 0) {
-      return { validationErrors }
+      throw new ValidationError('invalid fields', validationErrors)
     }
 
     const newBeneficiary = await this.repository.create(data)

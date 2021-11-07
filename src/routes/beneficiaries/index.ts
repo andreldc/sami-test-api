@@ -1,5 +1,6 @@
 import { FastifyPluginAsync } from 'fastify'
 import { BeneficiaryController } from '../../controllers/BeneficiaryController'
+import { HttpError } from '../../helpers/HttpErrorHelper'
 
 interface IdParam {
   id: number
@@ -18,7 +19,14 @@ const beneficiary: FastifyPluginAsync = async (fastify, opts): Promise<void> => 
   })
 
   fastify.post('/', async function (request, reply) {
-    return await controller.create(request.body)
+    try {
+      const beneficiary = await controller.create(request.body)
+      reply.code(201).send(beneficiary)
+      return
+    } catch (error: unknown) {
+      const httpError = HttpError(error as Error)
+      return await reply.code(httpError.statusCode).send(httpError.body)
+    }
   })
 
   fastify.put<{ Params: IdParam}>('/:id', async function (request, reply) {
