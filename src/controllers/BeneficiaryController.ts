@@ -3,7 +3,7 @@ import { plainToClass } from 'class-transformer'
 import { BeneficiaryRepository } from '../repositories/BeneficiaryRepository'
 import { Beneficiary } from '../entities/BeneficiaryEntity'
 import { ValidationError } from '../errors/ValidationError'
-import { NoContentError } from '../errors/NoContentError'
+import { NotFoundError } from '../errors/NotFoundError'
 
 export class BeneficiaryController {
   repository: BeneficiaryRepository
@@ -21,7 +21,7 @@ export class BeneficiaryController {
     const beneficiary = await this.repository.findById(id)
 
     if (!beneficiary) {
-      throw new NoContentError('Beneficiary not found')
+      throw new NotFoundError('Beneficiary not found')
     }
 
     return beneficiary
@@ -64,6 +64,12 @@ export class BeneficiaryController {
   }
 
   async delete (id: number): Promise<any> {
+    const beneficiary = await this.repository.findById(id)
+
+    if (!beneficiary) {
+      throw new NotFoundError('Beneficiary not found')
+    }
+
     await this.repository.delete(id)
     return { message: 'Beneficiary deleted' }
   }
