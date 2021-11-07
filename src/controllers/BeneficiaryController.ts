@@ -4,19 +4,19 @@ import { validate } from 'class-validator'
 import { plainToClass } from 'class-transformer'
 
 export class BeneficiaryController {
-  model: BeneficiaryRepository
+  repository: BeneficiaryRepository
 
   constructor () {
-    this.model = new BeneficiaryRepository()
+    this.repository = new BeneficiaryRepository()
   }
 
   async findAll (): Promise<any> {
-    const beneficiaries = await this.model.findAll()
+    const beneficiaries = await this.repository.findAll()
     return beneficiaries
   }
 
   async findById (id: number): Promise<any> {
-    const beneficiary = await this.model.findById(id)
+    const beneficiary = await this.repository.findById(id)
     return beneficiary
   }
 
@@ -29,7 +29,7 @@ export class BeneficiaryController {
       return { validationErrors }
     }
 
-    const newBeneficiary = await this.model.create(data)
+    const newBeneficiary = await this.repository.create(data)
     return newBeneficiary
   }
 
@@ -46,12 +46,12 @@ export class BeneficiaryController {
       return { validationErrors }
     }
 
-    const updatedBeneficiary = await this.model.update(beneficiary)
+    const updatedBeneficiary = await this.repository.update(beneficiary)
     return updatedBeneficiary
   }
 
   async delete (id: number): Promise<any> {
-    await this.model.delete(id)
+    await this.repository.delete(id)
     return { message: 'Beneficiary deleted' }
   }
 }
