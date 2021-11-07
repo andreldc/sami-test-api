@@ -3,6 +3,7 @@ import { plainToClass } from 'class-transformer'
 import { BeneficiaryRepository } from '../repositories/BeneficiaryRepository'
 import { Beneficiary } from '../entities/BeneficiaryEntity'
 import { ValidationError } from '../errors/ValidationError'
+import { NotFoundError } from '../errors/NotFoundError'
 
 export class BeneficiaryController {
   repository: BeneficiaryRepository
@@ -18,6 +19,11 @@ export class BeneficiaryController {
 
   async findById (id: number): Promise<any> {
     const beneficiary = await this.repository.findById(id)
+
+    if (!beneficiary) {
+      throw new NotFoundError('Beneficiary not found')
+    }
+
     return beneficiary
   }
 

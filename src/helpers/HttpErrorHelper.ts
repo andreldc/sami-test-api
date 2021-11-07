@@ -1,4 +1,5 @@
 import { ValidationError } from '../errors/ValidationError'
+import { NotFoundError } from '../errors/NotFoundError'
 
 interface HttpResponse {
   statusCode: number
@@ -12,6 +13,8 @@ export const HttpError = (error: Error): HttpResponse => {
     } else {
       return { statusCode: 400, body: { errors: error.errors } }
     }
+  } else if (error instanceof NotFoundError) {
+    return { statusCode: 404, body: { message: 'Not Found', error: error.message, statusCode: 404 } }
   } else {
     return { statusCode: 500, body: { message: 'internal server error', error: 'internal server error' } }
   }

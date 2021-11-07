@@ -14,8 +14,14 @@ const beneficiary: FastifyPluginAsync = async (fastify, opts): Promise<void> => 
   })
 
   fastify.get<{Params: IdParam }>('/:id', async function (request, reply) {
-    const { id } = request.params
-    return await controller.findById(id)
+    try {
+      const { id } = request.params
+      const beneficiary = await controller.findById(id)
+      reply.code(200).send(beneficiary)
+    } catch (error: unknown) {
+      const httpError = HttpError(error as Error)
+      reply.code(httpError.statusCode).send(httpError.body)
+    }
   })
 
   fastify.post('/', async function (request, reply) {
