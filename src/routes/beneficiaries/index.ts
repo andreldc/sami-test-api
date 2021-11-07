@@ -10,7 +10,13 @@ const beneficiary: FastifyPluginAsync = async (fastify, opts): Promise<void> => 
   const controller = new BeneficiaryController()
 
   fastify.get('/', async function (request, reply) {
-    return await controller.findAll()
+    try {
+      const beneficiaries = await controller.findAll()
+      reply.code(200).send(beneficiaries)
+    } catch (error: unknown) {
+      const { statusCode, body } = HttpError(error as Error)
+      reply.code(statusCode).send(body)
+    }
   })
 
   fastify.get<{Params: IdParam }>('/:id', async function (request, reply) {
@@ -19,8 +25,8 @@ const beneficiary: FastifyPluginAsync = async (fastify, opts): Promise<void> => 
       const beneficiary = await controller.findById(id)
       reply.code(200).send(beneficiary)
     } catch (error: unknown) {
-      const httpError = HttpError(error as Error)
-      reply.code(httpError.statusCode).send(httpError.body)
+      const { statusCode, body } = HttpError(error as Error)
+      reply.code(statusCode).send(body)
     }
   })
 
@@ -29,8 +35,8 @@ const beneficiary: FastifyPluginAsync = async (fastify, opts): Promise<void> => 
       const beneficiary = await controller.create(request.body)
       reply.code(201).send(beneficiary)
     } catch (error: unknown) {
-      const httpError = HttpError(error as Error)
-      reply.code(httpError.statusCode).send(httpError.body)
+      const { statusCode, body } = HttpError(error as Error)
+      reply.code(statusCode).send(body)
     }
   })
 
@@ -40,8 +46,8 @@ const beneficiary: FastifyPluginAsync = async (fastify, opts): Promise<void> => 
       const beneficiary = await controller.update(id, request.body)
       reply.code(200).send(beneficiary)
     } catch (error: unknown) {
-      const httpError = HttpError(error as Error)
-      reply.code(httpError.statusCode).send(httpError.body)
+      const { statusCode, body } = HttpError(error as Error)
+      reply.code(statusCode).send(body)
     }
   })
 
