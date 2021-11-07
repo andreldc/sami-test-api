@@ -19,4 +19,8 @@ export class BeneficiaryRepository {
   async create (beneficiary: Beneficiary): Promise<Beneficiary> {
     return await this.repository.save(beneficiary)
   }
+
+  async delete (id: number): Promise<any> {
+    await this.repository.delete(id)
+  }
 }

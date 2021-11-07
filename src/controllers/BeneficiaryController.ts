@@ -32,4 +32,9 @@ export class BeneficiaryController {
     const newBeneficiary = await this.model.create(data)
     return newBeneficiary
   }
+
+  async delete (id: number): Promise<any> {
+    await this.model.delete(id)
+    return { message: 'Beneficiary deleted' }
+  }
 }

@@ -20,6 +20,11 @@ const beneficiary: FastifyPluginAsync = async (fastify, opts): Promise<void> => 
   fastify.post('/', async function (request, reply) {
     return await controller.create(request.body)
   })
+
+  fastify.delete<{Params: IdParam}>('/:id', async function (request, reply) {
+    const { id } = request.params
+    return await controller.delete(id)
+  })
 }
 
 export default beneficiary
