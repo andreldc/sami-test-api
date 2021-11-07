@@ -22,10 +22,9 @@ const beneficiary: FastifyPluginAsync = async (fastify, opts): Promise<void> => 
     try {
       const beneficiary = await controller.create(request.body)
       reply.code(201).send(beneficiary)
-      return
     } catch (error: unknown) {
       const httpError = HttpError(error as Error)
-      return await reply.code(httpError.statusCode).send(httpError.body)
+      reply.code(httpError.statusCode).send(httpError.body)
     }
   })
 
