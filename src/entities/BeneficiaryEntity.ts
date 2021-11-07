@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import { BaseEntity } from './BaseEntity'
 import { Length, IsString, IsDate, IsNotEmpty, IsEnum, IsInt, IsOptional } from 'class-validator'
+import { Type } from 'class-transformer'
 
 export enum PlanType {
   BASIC = 'basic',
@@ -27,6 +28,7 @@ export class Beneficiary extends BaseEntity {
   rg!: string
 
   @IsDate() @IsNotEmpty()
+  @Type(() => Date)
   @Column('date', { nullable: false })
   birth_date!: Date
 

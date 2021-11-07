@@ -20,6 +20,11 @@ export class BeneficiaryRepository {
     return await this.repository.save(beneficiary)
   }
 
+  async update (beneficiary: Beneficiary): Promise<Beneficiary | undefined> {
+    await this.repository.save(beneficiary)
+    return await this.findById(beneficiary.id)
+  }
+
   async delete (id: number): Promise<any> {
     await this.repository.delete(id)
   }

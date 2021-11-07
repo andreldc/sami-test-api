@@ -33,6 +33,23 @@ export class BeneficiaryController {
     return newBeneficiary
   }
 
+  async update (id: number, data: any): Promise<any> {
+    if (!data.id) {
+      data.id = id
+    }
+
+    const beneficiary = plainToClass(Beneficiary, data)
+
+    const validationErrors = (await validate(beneficiary)).map(error => ({ property: error.property, error: error.constraints }))
+
+    if (validationErrors.length > 0) {
+      return { validationErrors }
+    }
+
+    const updatedBeneficiary = await this.model.update(beneficiary)
+    return updatedBeneficiary
+  }
+
   async delete (id: number): Promise<any> {
     await this.model.delete(id)
     return { message: 'Beneficiary deleted' }
