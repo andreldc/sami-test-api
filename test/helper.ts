@@ -6,11 +6,11 @@ function config (): object {
   return {
     typeormConfig: {
       type: 'mysql',
-      host: 'localhost',
+      host: 'db',
       port: 3306,
       username: 'root',
       password: '4231',
-      database: 'sami-test',
+      database: 'samitest',
       synchronize: true,
       logging: false,
       dropSchema: true,

@@ -9,10 +9,14 @@ services:
       MYSQL_DATABASE: "sami"
     ports:
       - 3306:3306
+    entrypoint: sh -c "
+      echo 'CREATE DATABASE IF NOT EXISTS sami; CREATE DATABASE IF NOT EXISTS samitest;' > /docker-entrypoint-initdb.d/init.sql;
+      /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      "
   api:
-    image: node:14
+    image: node:14.18-alpine3.13
     container_name: api
-    restart: always
+    tty: true
     depends_on:
       - db
     ports:
@@ -20,6 +24,6 @@ services:
     volumes:
       - .:/usr/src/app
     working_dir: /usr/src/app
-    command: bash -c "yarn && yarn dev"
+    command: sh
     links:
       - db
