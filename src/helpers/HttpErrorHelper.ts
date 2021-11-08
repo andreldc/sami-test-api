@@ -1,6 +1,5 @@
 import { ValidationError } from '../errors/ValidationError'
 import { NotFoundError } from '../errors/NotFoundError'
-import { NoContentError } from '../errors/NoContentError'
 
 interface HttpResponse {
   statusCode: number
@@ -8,9 +7,7 @@ interface HttpResponse {
 }
 
 export const HttpError = (error: Error): HttpResponse => {
-  if (error instanceof NoContentError) {
-    return { statusCode: 204 }
-  } else if (error instanceof ValidationError) {
+  if (error instanceof ValidationError) {
     if (error.errors && error.errors.length === 1) {
       return { statusCode: 400, body: { ...error.errors[0] } }
     } else if (error.errors && error.errors.length > 1) {
