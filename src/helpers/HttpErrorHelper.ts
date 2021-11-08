@@ -11,14 +11,16 @@ export const HttpError = (error: Error): HttpResponse => {
   if (error instanceof NoContentError) {
     return { statusCode: 204 }
   } else if (error instanceof ValidationError) {
-    if (error.errors.length === 1) {
+    if (error.errors && error.errors.length === 1) {
       return { statusCode: 400, body: { ...error.errors[0] } }
-    } else {
+    } else if (error.errors && error.errors.length > 1) {
       return { statusCode: 400, body: { errors: error.errors } }
+    } else {
+      return { statusCode: 400, body: { message: error.message, error: 'Validation Error' } }
     }
   } else if (error instanceof NotFoundError) {
     return { statusCode: 404, body: { message: error.message, error: 'Not Found' } }
   } else {
-    return { statusCode: 500, body: { message: 'internal server error', error: 'internal server error' } }
+    return { statusCode: 500, body: { message: error.message, error: 'Internal Server Error' } }
   }
 }
