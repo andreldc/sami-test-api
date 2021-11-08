@@ -13,8 +13,8 @@
     "dev": "tsc && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"tsc -w\" \"fastify start --ignore-watch=.ts$ -w -l info -P dist/src/app.js\"",
     "up": "docker-compose up -d && docker exec -it api sh",
     "down": "docker-compose down",
-    "generate-migrations": "yarn typeorm migration:generate -n AutoMigrate",
-    "apply-migrations": "yarn ts-node --transpile-only ./node_modules/typeorm/cli.js migration:run",
+    "generate-migrations": "yarn typeorm migration:generate -n AutoMigrate -o",
+    "apply-migrations": "yarn typeorm migration:run",
     "revert-migrations": "yarn typeorm migration:revert"
   },
   "keywords": [],
