@@ -15,6 +15,11 @@ export default fastifyPlugin(
   ): Promise<void> => {
     const connection: Connection = await createConnection(opts.typeormConfig)
     fastify.decorate('db', connection)
+
+    fastify.addHook('onClose', async (instance, done) => {
+      await connection.close()
+      done()
+    })
   }
 )
 
