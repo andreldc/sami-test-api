@@ -1,6 +1,8 @@
 import { cpf } from 'cpf-cnpj-validator'
 import { build } from '../../helper'
 
+jest.setTimeout(30000)
+
 const getMockBeneficiary = (): {[index: string]: any} => ({
   name: 'Test Name',
   cpf: cpf.generate(),

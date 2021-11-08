@@ -1,5 +1,7 @@
 import { build } from '../../helper'
 
+jest.setTimeout(30000)
+
 const getMockBeneficiary = (): {[index: string]: any} => ({
   name: 'Test Name',
   cpf: '09712555046',
