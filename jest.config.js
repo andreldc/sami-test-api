@@ -6,6 +6,7 @@ module.exports = {
   coverageProvider: 'v8',
   preset: 'ts-jest',
   testEnvironment: 'node',
+  maxWorkers: 1,
   testMatch: ['**/?(*.)+(spec|test).[t]s?(x)'
   ]
 }
