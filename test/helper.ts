@@ -1,8 +1,8 @@
-import Fastify from 'fastify'
+import Fastify, { FastifyInstance } from 'fastify'
 import fp from 'fastify-plugin'
 import App from '../src/app'
 
-async function config (): Promise<any> {
+function config (): object {
   return {
     typeormConfig: {
       type: 'mysql',
@@ -19,12 +19,12 @@ async function config (): Promise<any> {
   }
 }
 
-function build () {
+function build (): FastifyInstance {
   const app = Fastify()
 
-  beforeAll(async () => {
-    void app.register(fp(App), await config())
-    await app.ready()
+  beforeAll(() => {
+    void app.register(fp(App), config())
+    app.ready()
   })
 
   afterAll(() => app.close())
