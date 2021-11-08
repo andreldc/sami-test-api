@@ -18,10 +18,13 @@ export class BeneficiaryController {
   }
 
   async findById (id: number): Promise<Beneficiary> {
-    const beneficiary = await this.repository.findById(id)
+    if (!id) {
+      throw new ValidationError('id must be provided')
+    }
 
+    const beneficiary = await this.repository.findById(id)
     if (!beneficiary) {
-      throw new NotFoundError('Beneficiary not found')
+      throw new NotFoundError(`Beneficiary with id=${id} not found`)
     }
 
     return beneficiary
@@ -44,12 +47,15 @@ export class BeneficiaryController {
   }
 
   async update (id: number, data: any): Promise<Beneficiary | undefined> {
+    if (!id) {
+      throw new ValidationError('id must be provided')
+    }
+
     if (!data.id) {
       data.id = id
     }
 
     const beneficiary = plainToClass(Beneficiary, data)
-
     const validationErrors = (await validate(beneficiary)).map(error => ({ message: 'validation error', property: error.property, error: error.constraints }))
     if (validationErrors.length > 0) {
       throw new ValidationError('invalid fields', validationErrors)
@@ -64,10 +70,13 @@ export class BeneficiaryController {
   }
 
   async delete (id: number): Promise<void> {
-    const beneficiary = await this.repository.findById(id)
+    if (!id) {
+      throw new ValidationError('id must be provided')
+    }
 
+    const beneficiary = await this.repository.findById(id)
     if (!beneficiary) {
-      throw new NotFoundError('Beneficiary not found')
+      throw new NotFoundError(`Beneficiary with id=${id} not found`)
     }
 
     await this.repository.delete(id)
