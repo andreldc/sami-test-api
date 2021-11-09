@@ -4,10 +4,15 @@ import { getConnection, Repository } from 'typeorm'
 export class BeneficiaryRepository {
   repository: Repository<Beneficiary> = getConnection().getRepository('Beneficiary')
 
-  async findAll (): Promise<Beneficiary[]> {
-    return await this.repository.createQueryBuilder('beneficiary')
+  async findAll (search?: String): Promise<Beneficiary[]> {
+    const query = await this.repository.createQueryBuilder('beneficiary')
       .orderBy('beneficiary.name', 'ASC')
-      .getMany()
+
+    if (search) {
+      query.andWhere('LOWER(beneficiary.name) LIKE LOWER(:name)', { name: `%${search}%` })
+    }
+
+    return await query.getMany()
   }
 
   async findById (id: number): Promise<Beneficiary | undefined> {

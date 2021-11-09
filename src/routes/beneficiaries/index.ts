@@ -6,12 +6,17 @@ interface IdParam {
   id: number
 }
 
+interface SearchParam {
+  search: string
+}
+
 const beneficiary: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   const controller = new BeneficiaryController()
 
-  fastify.get('/', async function (request, reply) {
+  fastify.get < { Querystring: SearchParam }>('/', async function (request, reply) {
     try {
-      const beneficiaries = await controller.findAll()
+      const { search } = request.query
+      const beneficiaries = await controller.findAll(search)
       reply.code(200).send(beneficiaries)
     } catch (error: unknown) {
       const { statusCode, body } = HttpError(error as Error)

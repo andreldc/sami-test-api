@@ -12,8 +12,8 @@ export class BeneficiaryController {
     this.repository = new BeneficiaryRepository()
   }
 
-  async findAll (): Promise<Beneficiary[]> {
-    const beneficiaries = await this.repository.findAll()
+  async findAll (search?: String): Promise<Beneficiary[]> {
+    const beneficiaries = await this.repository.findAll(search)
     return beneficiaries
   }
 
