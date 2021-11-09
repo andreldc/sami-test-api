@@ -13,6 +13,8 @@ services:
       echo 'CREATE DATABASE IF NOT EXISTS sami; CREATE DATABASE IF NOT EXISTS samitest;' > /docker-entrypoint-initdb.d/init.sql;
       /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
       "
+    volumes:
+      - datavolume:/var/lib/mysql
   api:
     image: node:14.18-alpine3.13
     container_name: api
@@ -27,3 +29,5 @@ services:
     command: sh
     links:
       - db
+volumes:
+  datavolume:
